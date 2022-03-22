@@ -31,6 +31,11 @@ int main(void){
 
 void switch_interrupt_handler(){
   char pval = P2IN;
+
+  P2IES |= (pval & switches);	/* if switch up, sense down */
+  P2IES &= (pval | ~switches);	/* if switch down, sense up */
+
+
   
   // sw1 works as ctrl for sw2,sw3,sw4 to turn off what they turn on
   if (pval & sw1){
