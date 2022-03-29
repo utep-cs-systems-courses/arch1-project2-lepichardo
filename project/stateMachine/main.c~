@@ -1,0 +1,12 @@
+#include <msp430.h>
+#include "timerLib.h"
+
+#define greenLed BIT0
+#define redLed BIT6
+#define leds (BIT0 | BIT 6)
+
+
+
+int main(void){
+
+}
