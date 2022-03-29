@@ -11,8 +11,7 @@
 #define sw2 BIT1
 #define sw3 BIT2
 #define sw4 BIT3
-#define switches (sw1 | sw2 | sw3 | sw4)
-
+#define switches (BIT0 | BIT1 | BIT2 | BIT3)
 
 int main(void){
 
@@ -26,6 +25,8 @@ int main(void){
   P2OUT |= switches;
   P2DIR &= ~switches;
 
+  
+  //enableWDTInterrupts(); 
   or_sr(0x18); 
 }
 
@@ -34,25 +35,21 @@ void switch_interrupt_handler(){
 
   P2IES |= (pval & switches);	/* if switch up, sense down */
   P2IES &= (pval | ~switches);	/* if switch down, sense up */
-
-
   
-  // sw1 works as ctrl for sw2,sw3,sw4 to turn off what they turn on
-  if (pval & sw1){
+  if (~pval & sw1){
+    P1OUT &= ~greenLed;
+    P1OUT |= redLed;
+  }
+  
+  if (~pval & sw2){
+    P1OUT &= ~redLed;
+    P1OUT |= greenLed;
+  }
+
+  if (~pval & sw3){
     P1OUT &= ~leds;
   }
-  // turns both leds on
-  if (pval & sw2){
-    P1OUT ^= leds;
-  }
-  // turns everything off but the redLED
-  if (pval & sw3){
-    P1OUT ^= redLed;
-  }
-  // turns everything off but the greenLED
-  if (pval & sw4){
-    P1OUT ^= greenLed;
-  }
+  
 }
 void __interrupt_vec(PORT2_VECTOR) Port_2(){
    if (P2IFG & switches) { 

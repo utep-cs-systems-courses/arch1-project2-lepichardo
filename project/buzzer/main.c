@@ -35,19 +35,19 @@ void switch_interrupt_handler(){
   P2IES |= (pval & ~switches);	/* if switch up, sense down */
   P2IES &= (pval | switches);	/* if switch down, sense up */
   
-  if (pval & sw1){
+  if (~pval & sw1){
     buzzer_set_period(0000);
   }
   
-  if (pval & sw2){
+  if (~pval & sw2){
     buzzer_set_period(1000);
   }
   
-  if (pval & sw3){
+  if (~pval & sw3){
     buzzer_set_period(1500);
   }
   
-  if (pval & sw4){
+  if (~pval & sw4){
     buzzer_set_period(2000);
   }
   
