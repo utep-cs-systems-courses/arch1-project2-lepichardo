@@ -24,9 +24,7 @@ int main(void){
   P2IE |= switches;
   P2OUT |= switches;
   P2DIR &= ~switches;
-
-  
-  //enableWDTInterrupts(); 
+ 
   or_sr(0x18); 
 }
 
@@ -47,6 +45,10 @@ void switch_interrupt_handler(){
   }
 
   if (~pval & sw3){
+    P1OUT |= leds;
+  }
+  
+  if (~pval & sw4){
     P1OUT &= ~leds;
   }
   
